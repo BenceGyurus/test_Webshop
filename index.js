@@ -125,7 +125,7 @@ app.use((req,res)=>{
         res.sendFile(`${__dirname}/source/${req.url}`);
     }
     else{
-        let paths = JSON.parse(open_File("path.json"));
+        let paths = JSON.parse(open(`${__dirname}/path.json`));
         //req.send(paths)
         //paths[req.url] ? res.sendFile(`${__dirname}/source/${paths[req.url]}`) : "404";
         res.send(paths);
