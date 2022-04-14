@@ -85,6 +85,10 @@ app.post("/adminlogin",(req, res) =>{
 });
 
 
+app.post("/cssStyle/style.css", (req,res)=>{
+    res.sendFile(`${__dirname}/source/cssStyle/style.css`);
+})
+
 app.post('/post-test', (req, res) => {
     console.log('Got body:', req.body);
     //sendStatus(200);
