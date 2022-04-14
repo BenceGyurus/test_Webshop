@@ -68,7 +68,7 @@ function parse_Body(data){
     }
     return JSON.parse(data)
 }
-app.use(express.static('source'));
+//app.use(express.static('source'));
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.post("/adminlogin",(req, res) =>{
@@ -119,6 +119,13 @@ app.get("/", (req, res)=>{
 app.get("/admin-login", (req, res)=>{
     res.sendFile(`${__dirname}/source/admin-login/login.html`);
 });
+
+app.use((req,res)=>{
+    if (req.url != "/" && req.url != "/admin-login"){
+        res.send("test");
+    }
+    next();
+})
 
 
 app.listen(server_Settings()[1])
