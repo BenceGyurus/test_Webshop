@@ -50,7 +50,7 @@ function parse_Cookies(){
 function main(){
     cookies = parse_Cookies();
     if (!cookies.cookie){
-        set_Cookie("cookie/cookie_Ask.html")
+        set_Cookie("/cookie/cookie_Ask.html")
     }
 }
 function element_Body(datas){
