@@ -121,10 +121,12 @@ app.get("/admin-login", (req, res)=>{
 });
 
 app.use((req,res)=>{
-    if (req.url != "/" && req.url != "/admin-login"){
-        res.send("test");
+    if (req.url.split(".").length > 1){
+        res.sendFile(`${__dirname}/source/${req.url}`);
     }
+    else{
     next();
+    }
 })
 
 
