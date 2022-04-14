@@ -1,0 +1,38 @@
+#cookie_Conteiner{
+    width:100%;
+    margin: 0px;
+    position: fixed;
+    left: 0px;
+    background-color: #3d3d3d;
+    color: #b5b5b5;
+}
+
+.cookie_Title{
+    margin: 3px 0px 0px 0px;
+    color: #b5b5b5;
+}
+
+.cookie_Description{
+    margin: 3px 0px 0px 0px;
+    color: #b5b5b5;
+}
+
+.button{
+    width: max-content;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    float: right;
+    position: relative;
+    top: -50%;
+    right: 3%;
+}
+
+#accept{
+    background-color: green;
+}
+
+#reject{
+    background-color: red;
+}

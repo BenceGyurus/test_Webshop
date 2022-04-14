@@ -1,0 +1,22 @@
+{
+    "products" : [
+        {
+            "name": "Teszt termék",
+            "price": 1200,
+            "isInStock": true,
+            "image": "test_Image.png",
+            "description": "Ez egy jó termék",
+            "rating" : 0.0,
+            "id" : "test01"
+        },
+        {
+            "name": "Teszt termék",
+            "price": 1200,
+            "isInStock": false,
+            "image": "test_Image.png",
+            "description": "Ez a legjobb termék",
+            "rating" : 0.0,
+            "id" : "test02"
+        }
+    ]
+}

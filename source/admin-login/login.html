@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin bejelentkezés</title>
+    <link rel="stylesheet" href="/admin-login/login.css">
+</head>
+<body>
+    <div id = "conteiner">
+        <h1 class = "title">Admin bejelentkezés</h1>
+        <label class = "title_Label">E-mail cím</label>
+        <input type = "text" class = "i" id = "mail" placeholder="asd123@asd.com"/>
+        <label class = "title_Label">Jelszó</label>
+        <input type = "password" class = "i" id = "password" />
+        <label id = "error"></label>
+        <input type = "button" class = "i" value = "Bejelentkezés" id = "submit_Button" onclick = "send_This()"/>
+    </div>
+</body>
+<script src = "/cookie/cookies.js"></script>
+<script src = "/admin-login/style.js"></script>
+<script src = "/admin-login/login.js"></script>
+</html>
