@@ -108,18 +108,25 @@ app.get("/products/:id", (req, res)=>{
     }
 })
 
+app.get("/", (req, res)=>{
+    res.sendFile(`${__dirname}/source/index.html`);
+})
+
+app.get("/admin-login", (req, res)=>{
+    res.sendFile(`${__dirname}/source/admin-login/login.html`);
+})
+
 app.use((req, res, next) =>{
-    console.log(req.url);
     if(req.url.split(".").length > 1 && req.method == "GET"){
         res.set('Content-Type', set_Header.get_Header(req.url));
         res.send(open(`${__dirname}/source/${req.url}`));
     }
-    else{
+    /*else{
         let json_Datas = JSON.parse(open_File("path.json"));
         if (json_Datas[req.url]){
             res.send(open(`${__dirname}/source/${json_Datas[req.url]}`));
         }
-    }
+    }*/
     next();
 })
 
