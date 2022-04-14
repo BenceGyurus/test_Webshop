@@ -91,15 +91,6 @@ app.post('/post-test', (req, res) => {
     res.send("ok");
 });
 
-app.get("/", (req, res)=>{
-    res.sendFile(`${__dirname}/source/index.html`);
-});
-
-
-app.get("/admin-login", (req, res)=>{
-    res.sendFile(`${__dirname}/source/admin-login/login.html`);
-});
-
 app.get("/products/:id", (req, res)=>{
     let is_There = false;
     products = JSON.parse(open_File("source/products.json"));
