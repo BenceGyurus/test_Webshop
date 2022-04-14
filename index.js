@@ -125,9 +125,8 @@ app.use((req,res)=>{
         res.sendFile(`${__dirname}/source/${req.url}`);
     }
     else{
-        if (req.url == "/admin"){
-            res.send(open(`${__dirname}/source/admin/index.html`));
-        }
+        let paths = JSON.parse(open_File("path.json"));
+        paths[req.url] ? res.send(open(`${__dirname}/source/${paths[req.url]}`)) : "404";
     }
 })
 
