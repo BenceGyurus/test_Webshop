@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express(); 
 const fs = require("fs");
-const selector = require("./selector");
+//const selector = require("./selector");
 const bodyParser = require('body-parser');
 
 
@@ -23,7 +23,7 @@ function open(path){
 
 function server_Settings(){
     let host_Name = "0.0.0.0";
-    let port = 8000;
+    let port = 3000;
     try{
         data = JSON.parse(fs.readFileSync(`${__dirname}/server_Data.json`));
         host_Name = data.host;
@@ -137,5 +137,5 @@ app.get("/", (req, res)=>{
 })
 
 
-app.listen(server_Settings()[1], () => {})
+app.listen(server_Settings()[1])
 
