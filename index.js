@@ -123,10 +123,6 @@ app.use((req, res, next) =>{
     next();
 })
 
-app.get("/", (req, res)=>{
-    res.sendFile(`${__dirname}/source/index.html`);
-})
-
 
 app.listen(server_Settings()[1])
 
