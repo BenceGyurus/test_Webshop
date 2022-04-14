@@ -125,7 +125,9 @@ app.use((req,res)=>{
         res.sendFile(`${__dirname}/source/${req.url}`);
     }
     else{
-    next();
+        if (req.url == "/admin"){
+            res.send(open(`${__dirname}/source/admin/index.html`));
+        }
     }
 })
 
