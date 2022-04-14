@@ -123,7 +123,7 @@ app.use((req, res, next) =>{
     next();
 })
 
-app.get("/", (req, res)=>{res.send("szia")});
+//app.get("/", (req, res)=>{res.send("szia")});
 
 
 app.listen(server_Settings()[1])
