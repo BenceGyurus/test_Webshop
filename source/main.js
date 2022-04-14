@@ -14,7 +14,7 @@ function send_Request(method, url, body, callback){
 }
 
 function new_Tab(id){
-    url = `/products/${id}`;
+    url = `products/${id}`;
     console.log(url);
     window.open(url);
 }
