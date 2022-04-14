@@ -1,0 +1,7 @@
+{
+    "headers" : [
+         [["html", "css", "js"], ["text"]],
+         [["png", "jpg", "jpeg", "img", "jfif", "svg"], ["image"]],
+         [["json"], ["application"]]
+    ]
+}
