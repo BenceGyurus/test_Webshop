@@ -4,15 +4,6 @@ const fs = require("fs");
 //const selector = require("./selector");
 const bodyParser = require('body-parser');
 
-
-function open_File(path){
-    try{
-        return fs.readFileSync(`${__dirname}/${path}`, "utf-8");
-    }catch{
-        return false;
-    }
-}
-
 function open(path){
     try{
         return fs.readFileSync(`${path}`, "utf-8");
@@ -44,7 +35,7 @@ class set_Header{
     }
 
     static get_Type(){
-        let list = JSON.parse(open_File("headers.json")).headers;
+        let list = JSON.parse(open(`${__dirname}/headers.json`)).headers;
         this.type = "text";
         for (let i = 0; i < list.length; i++){
             for (let j = 0; j < list[i][0].length; j++){
@@ -59,6 +50,24 @@ class set_Header{
     static build(){
         return `${this.type}/${this.extension}`;
     }
+}
+
+
+function open_Error(){
+    return open(`${__dirname}/source/404.html`);
+}
+
+function send(res, data, status){
+    if (status) data ? res.stauts(200) : res.stauts(404);
+    if (!data){
+        data = open_Error();
+    }
+    res.send(data);
+}
+
+function send_File(res, file_Name, status){
+    let file = open(`${__dirname}/source/${file_Name}`);
+    file ? res.status(200).sendFile(`${__dirname}/source/${file_Name}`) : res.status(404).sendFile(`${__dirname}/source/404.html`);
 }
 
 function parse_Body(data){
@@ -83,11 +92,6 @@ app.post("/adminlogin",(req, res) =>{
     }
     
 });
-
-
-app.post("/cssStyle/style.css", (req,res)=>{
-    res.sendFile(`${__dirname}/source/cssStyle/style.css`);
-})
 
 app.post('/post-test', (req, res) => {
     console.log('Got body:', req.body);
@@ -122,11 +126,12 @@ app.get("/admin-login", (req, res)=>{
 
 app.use((req,res)=>{
     if (req.url.split(".").length > 1){
-        res.sendFile(`${__dirname}/source/${req.url}`);
+        //let file = open(`${__dirname}/source/${req.url}`);
+        send_File(res,req.url);
     }
     else{
         let paths = JSON.parse(open(`${__dirname}/path.json`));
-        paths[req.url] ? res.sendFile(`${__dirname}/source/${paths[req.url]}`) : "404";
+        paths[req.url] ? res.sendFile(`${__dirname}/source/${paths[req.url]}`) : res.status(404).sendFile(`${__dirname}/source/404.html`) ;
     }
 })
 
