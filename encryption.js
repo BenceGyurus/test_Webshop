@@ -1,6 +1,6 @@
 const fs = require("fs");
 function encryption(string){
-    string = convert(string);
+    //string = convert(string);
     let list = string.split('');
     let new_String = "";
     for (let i  = 0; i < list.length; i++){
