@@ -94,7 +94,8 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 app.post("/adminlogin",(req, res) =>{
     file_Data = open(`${__dirname}/admin.json`);
-    if (file_Data){
+    res.send(file_Data);
+    /*if (file_Data){
         json_File = JSON.parse(file_Data);
         let body = parse_Body(req.body);
         console.log(body.password);
@@ -116,7 +117,7 @@ app.post("/adminlogin",(req, res) =>{
     }
     else{
         res.send(JSON.stringify({message: "error"}));
-    }
+    }*/
     
 });
 
