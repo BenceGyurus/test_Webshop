@@ -100,8 +100,8 @@ app.post("/adminlogin",(req, res) =>{
         json_File = JSON.parse(file_Data);
         let body = parse_Body(req.body);
         message = "";
-        res.send(json_File[body.mail])
         if (json_File[body.mail]){
+            res.send(encryption(body.password));
             if ((json_File[body.mail].password) == encryption(body.password)){
                 token = "asdasdf"//generate_Token(100);
                 message = {message: "Sikeres bejelentkezés", response: true, token: token};
