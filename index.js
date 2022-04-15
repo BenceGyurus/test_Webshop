@@ -99,12 +99,11 @@ app.post("/adminlogin",(req, res) =>{
     if (file_Data){
         json_File = JSON.parse(file_Data);
         let body = parse_Body(req.body);
-        res.send(body);
-        /*if (json_File[body.mail]){
+        if (json_File[body.mail]){
             if ((json_File[body.mail].password) == encryption(body.password)){
-                token = generate_Token(100);
+                token = "asdasdf"//generate_Token(100);
                 res.send({message: "Sikeres bejelentkezés", response: true, token: token});
-                //tokens[token] = req.socket.remoteAddress;
+                tokens[token] = req.socket.remoteAddress;
             }
             else{
                 res.send({message: "Helytelen jelszó"});
@@ -112,7 +111,7 @@ app.post("/adminlogin",(req, res) =>{
         }
         else{
             res.send({message: "Helytelen felhasználónév"});
-        }*/
+        }
     }
     else{
         res.send({message: "error"});
