@@ -102,7 +102,6 @@ app.post("/adminlogin",(req, res) =>{
         if (json_File[body.mail]){
             if ((json_File[body.mail].password) == encryption(body.password)){
                 token = generate_Token(100);
-                console.log(token);
                 res.send({message: "Sikeres bejelentkezés", response: true, token: token});
                 //tokens[token] = req.socket.remoteAddress;
             }
