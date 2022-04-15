@@ -1,0 +1,26 @@
+#alert{
+    position: absolute;
+    background-color: red;
+    height: max-content;
+    padding: 5px 20px 5px 20px;
+    margin: 10px auto;
+    border-radius: 20px;
+    font-family: sans-serif, "ubuntu";
+}
+
+h1{
+    width: 60%;
+}
+
+img{
+    position: absolute;
+    right: 15px;
+    height: 60%;
+    top: 15%;
+}
+
+#text{
+    width: 55%;
+    font-size: 19px;
+    font-weight: bold;
+}

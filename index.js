@@ -3,6 +3,9 @@ const app = express();
 const fs = require("fs");
 //const selector = require("./selector");
 const bodyParser = require('body-parser');
+const encryption = require("./encryption.js");
+
+var tokens = {};
 
 function open(path){
     try{
@@ -70,6 +73,15 @@ function send_File(res, file_Name, status){
     file ? res.status(200).sendFile(`${__dirname}/source/${file_Name}`) : res.status(404).sendFile(`${__dirname}/source/404.html`);
 }
 
+function generate_Token(length){
+    let letters_And_Numbers = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7' ,'8', '9', '0'];
+    let token = "";
+    for (let i = 0; i < length; i++){
+        token += letters_And_Numbers[Math.ceil(Math.random()*letters_And_Numbers.length)];
+    }
+    return token;
+}
+
 function parse_Body(data){
     key = Object.keys(data);
     if (key.length == 1 && !data[key]){
@@ -81,17 +93,42 @@ function parse_Body(data){
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.post("/adminlogin",(req, res) =>{
-    file_Data = open_File("admin.json");
+    file_Data = open(`${__dirname}/admin.json`);
     if (file_Data){
         json_File = JSON.parse(file_Data);
-        let body = parse_Body(req.body)
-        console.log(body.mail);
+        let body = parse_Body(req.body);
+        console.log(body.password);
+        if (json_File[body.mail]){
+            if ((json_File[body.mail].password) == encryption(body.password)){
+                token = generate_Token(100);
+                console.log(token);
+                res.send(JSON.stringify({message: "Sikeres bejelentkezés", response: true, token: token}));
+                tokens[token] = req.socket.remoteAddress;
+                console.log(tokens);
+            }
+            else{
+                res.send(JSON.stringify({message: "Helytelen jelszó"}));
+            }
+        }
+        else{
+            res.send(JSON.stringify({message: "Helytelen felhasználónév"}));
+        }
     }
     else{
         res.send(JSON.stringify({message: "error"}));
     }
     
 });
+
+app.post("/admin-login-cookie", (req,res)=>{
+    let body = parse_Body(req.body);
+    if (tokens[body.token]){
+        let long_Token = generate_Token(100);
+        res.send(JSON.stringify({name: "login_Token", value: long_Token}));
+        delete tokens[body.token];
+    }
+});
+
 
 app.post('/post-test', (req, res) => {
     console.log('Got body:', req.body);
@@ -125,7 +162,7 @@ app.get("/admin-login", (req, res)=>{
 });
 
 app.use((req,res)=>{
-    if (req.url.split(".").length > 1){
+    if (req.url.split(".").length > 1 && req.method == "GET"){
         //let file = open(`${__dirname}/source/${req.url}`);
         send_File(res,req.url);
     }

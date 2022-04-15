@@ -11,6 +11,20 @@ class cookie{
     static add_Cookie(name,value){
         cookie.add_Cookie(name, value);
     }
+    static delete_Cookie(name){
+        cookies = parse_Cookies();
+        let list = Object.keys(cookies);
+        this.clear_All_Cookie();
+        let this_Cookie = "";
+        for (let i = 0; i < list.length; i++){
+            this_Cookie += `${list[i]}=${cookies[list[i]]};`; 
+            if (list[i] == name){
+                this_Cookie += "expires=" + new Date().toUTCString() + ";path=/";
+            }
+            document.cookie = this_Cookie;
+            this_Cookie = "";
+        }
+    }
 }
 
 function set_Cookie(url, body){
@@ -103,7 +117,7 @@ function add_Style(){
 function add_Cookie(data){
     console.log(parse_Cookies());
     if (parse_Cookies().cookies == "true"){
-        document.cookie = `${data.name}=${data.value}`;
+        document.cookie = `${data.name}=${data.value}; path=/`;
         return true;
     }
     else{

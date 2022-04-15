@@ -16,9 +16,7 @@ function clear_Error(){
 }
 
 function control_Auto_Login(){
-    console.log("try");
     if (parse_Cookies().login_Token.length > 10){
-        console.log("auto login");
         window.location = "/admin";
     }
 }
@@ -61,6 +59,9 @@ function send_This(){
                     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     req.send(JSON.stringify({token: datas.token}));
             }
+            else{
+                write_Alert(datas.message);
+            }
             }
         }
         req.open("POST", "/adminlogin");
@@ -68,7 +69,7 @@ function send_This(){
         req.send(json);
     }
     else{
-        element_Error(errors[0]);
+        write_Alert(errors[0]);
     }
 }
 
