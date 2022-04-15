@@ -1,5 +1,5 @@
 const fs = require("fs");
-function encyription(string){
+function encryption(string){
     string = convert(string);
     let list = string.split('');
     let new_String = "";
@@ -31,4 +31,4 @@ function convert(string){
     }
 }
 
-module.exports = encyription;
+module.exports = encryption;
