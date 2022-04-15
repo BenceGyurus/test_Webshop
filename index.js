@@ -3,9 +3,43 @@ const app = express();
 const fs = require("fs");
 //const selector = require("./selector");
 const bodyParser = require('body-parser');
-const encryption = require("./encryption.js");
+//const encryption = require("./encryption.js");
 
 var tokens = {};
+
+
+function encryption(string){
+    string = convert(string);
+    let list = string.split('');
+    let new_String = "";
+    for (let i  = 0; i < list.length; i++){
+        let x = list[i].charCodeAt(0);
+        new_String += Math.floor(Math.sin(x**(-1*Math.E))*123456789123456789123);
+    }
+    return new_String;
+}
+
+function convert(string){
+    try{
+        let error = false;
+        let new_String = "";
+        let data = JSON.parse(fs.readFileSync("encryption.json"));
+        for (let i = 0; i < string.length; i++){
+            if (data[string[i]]){
+                new_String += data[string[i]]; 
+            }
+            else{
+                error = true;
+                return false;
+            }
+        }
+        return new_String;
+    } 
+    catch{
+        return false;
+    }
+}
+
 
 function open(path){
     try{
@@ -97,14 +131,12 @@ app.post("/adminlogin",(req, res) =>{
     if (file_Data){
         json_File = JSON.parse(file_Data);
         let body = parse_Body(req.body);
-        console.log(body.password);
         if (json_File[body.mail]){
             if ((json_File[body.mail].password) == encryption(body.password)){
                 token = generate_Token(100);
                 console.log(token);
                 res.send(JSON.stringify({message: "Sikeres bejelentkezés", response: true, token: token}));
                 tokens[token] = req.socket.remoteAddress;
-                console.log(tokens);
             }
             else{
                 res.send(JSON.stringify({message: "Helytelen jelszó"}));
