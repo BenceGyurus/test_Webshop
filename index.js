@@ -101,7 +101,7 @@ app.post("/adminlogin",(req, res) =>{
         let body = parse_Body(req.body);
         message = "";
         if (json_File[body.mail]){
-            res.send(encryption(body.password));
+            //res.send(encryption(body.password));
             if ((json_File[body.mail].password) == encryption(body.password)){
                 token = "asdasdf"//generate_Token(100);
                 message = {message: "Sikeres bejelentkezés", response: true, token: token};
@@ -120,7 +120,7 @@ app.post("/adminlogin",(req, res) =>{
         message = {message: "error"};
     }
 
-    //res.send(message);
+    res.send(message);
     
 });
 
