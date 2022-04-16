@@ -178,6 +178,10 @@ app.post("/get_Ip", (req, res)=>{
     })
 })
 
+app.post("/get_Logined_Users", (req,res)=>{
+    res.send(logined_Users.request());
+})
+
 
 app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
@@ -200,6 +204,7 @@ app.post("/admin-login-cookie", (req,res)=>{
     let body = parse_Body(req.body);
     if (tokens[body.token].ip == get_Ip(req)){
         let long_Token = generate_Token(100); 
+        res.send()
         logined_Users.add(long_Token, {ip: get_Ip(req), user: tokens[body.token].user, user_Id: tokens[body.token].user_Id});
         res.send(logined_Users.request());
         //res.send(JSON.stringify({name: "login_Token", value: long_Token}));
