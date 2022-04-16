@@ -1,6 +1,12 @@
 {
     "admin" : {
         "password": "490805561291600451805299463950357450205787761395687958467493348685860544580",
-        "id": "main_Admin"
+        "id": "main_Admin",
+        "edit_Rule": {
+            "add_Product" : true,
+            "orders" : true,
+            "edit_ASZF": true,
+            "add_Editor" : true
+        }
     }
 }

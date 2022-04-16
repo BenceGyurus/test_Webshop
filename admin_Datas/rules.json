@@ -1,0 +1,5 @@
+{
+    "rules": [
+        "add_Product", "orders", "edit_ASZF", "add_Editor"
+    ]
+}

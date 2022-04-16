@@ -51,7 +51,8 @@ function send_This(){
                         if (req.readyState == 4 && req.status == 200){
                             let next = add_Cookie(JSON.parse(req.responseText));
                             if (next){
-                            window.location = "/admin";
+                            write_Alert("Átirányítás folyamatban", "suc", "Sikeres bejelentkezés");
+                            setTimeout(()=>{window.location = "/admin";}, 3000);
                             }
                         }
                     }
@@ -60,7 +61,7 @@ function send_This(){
                     req.send(JSON.stringify({token: datas.token}));
             }
             else{
-                write_Alert(datas.message);
+                write_Alert(datas.message, "", "Sikertelen bejelentkezés");
             }
             }
         }

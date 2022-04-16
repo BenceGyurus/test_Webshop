@@ -22,8 +22,8 @@ function re_Animation(){
 }
 
 
-function write_Alert(text, type){
-    type = type ? "#ff9500" : "red";       //error, warning
+function write_Alert(text, type, title){
+    type = type ? type=="warning" ? "#ff9500" : "green"  : "red";       //error, warning
     req= new XMLHttpRequest();
     req.onreadystatechange = ()=>{
         if (req.status == 200 && req.readyState == 4){
@@ -42,6 +42,7 @@ function write_Alert(text, type){
             else{
                 pos = Math.ceil((s_Width/2)-((width)/2));
             }
+            title ? document.getElementById("title").innerHTML = title: "";
             animation();
             document.getElementById("alert").style.background = type;
             document.getElementById("alert").style.width = `${width}px`;

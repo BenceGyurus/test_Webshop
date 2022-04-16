@@ -6,8 +6,16 @@ const bodyParser = require('body-parser');
 const encryption = require("./encryption.js");
 
 var tokens = {};
+var long_Tokens = {};
 
-
+function control_Long_Token(token, ip_Adress){
+    if (Object.keys(long_Tokens).length > 0){
+    if (long_Tokens[token]["ip"] == ip_Adress){return true}else{return false}
+    }
+    else{
+        return false;
+    }
+}
 
 function open(path){
     try{
@@ -105,7 +113,7 @@ app.post("/adminlogin",(req, res) =>{
             if ((json_File[body.mail].password) == encryption(body.password)){
                 token = "asdasdf"//generate_Token(100);
                 message = {message: "Sikeres bejelentkezés", response: true, token: token};
-                tokens[token] = req.socket.remoteAddress;
+                tokens[token] = {ip: req.socket.remoteAddress, user: body.mail,user_Id: json_File[body.mail].id};
             }
             else{
                 message = {message: "Helytelen jelszó"};
@@ -124,10 +132,28 @@ app.post("/adminlogin",(req, res) =>{
     
 });
 
+
+app.post("/get_Admin_Rule", (req,res)=>{
+    let body = parse_Body(req.body);
+    if (body.token){
+    if (control_Long_Token(body.token,req.socket.remoteAddress)){
+        open(`${__dirname}/admin_Datas/admin_Rules.html`) ? res.sendFile(`${__dirname}/admin_Datas/admin_Rules.html`) : res.sendFile(`${__dirname}/source/404.html`)
+    }
+    else{
+        res.send({message: "Nincs hozzáférése ehhez az oldalhoz!", error: true});
+    }
+    }
+    else{
+        res.send({message: "Nincs hozzáférése ehhez az oldalhoz!", error: true});
+    }
+})
+
+
 app.post("/admin-login-cookie", (req,res)=>{
     let body = parse_Body(req.body);
-    if (tokens[body.token]){
+    if (tokens[body.token].ip == req.socket.remoteAddress){
         let long_Token = generate_Token(100);
+        long_Tokens[long_Token] = {ip: req.socket.remoteAddress, user: tokens[body.token].user, user_Id: tokens[body.token].user_Id};
         res.send(JSON.stringify({name: "login_Token", value: long_Token}));
         delete tokens[body.token];
     }
