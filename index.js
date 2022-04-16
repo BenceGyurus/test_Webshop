@@ -10,7 +10,7 @@ var long_Tokens = {};
 
 function control_Long_Token(token, ip_Adress){
     if (Object.keys(long_Tokens).length > 0){
-    if (long_Tokens[token]["ip"] == ip_Adress){return true}else{return false}
+    if (long_Tokens[token].ip == ip_Adress){return true}else{return false}
     }
     else{
         return false;
@@ -135,7 +135,7 @@ app.post("/adminlogin",(req, res) =>{
 
 app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
-    res.send(body);
+    res.send(long_Tokens);
     /*if (body.token){
     if (control_Long_Token(body.token,req.socket.remoteAddress)){
         open(`${__dirname}/admin_Datas/admin_Rules.html`) ? res.sendFile(`${__dirname}/admin_Datas/admin_Rules.html`) : res.sendFile(`${__dirname}/source/404.html`)
