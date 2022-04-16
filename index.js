@@ -199,10 +199,10 @@ app.post("/get_Admin_Rule", (req,res)=>{
 app.post("/admin-login-cookie", (req,res)=>{
     let body = parse_Body(req.body);
     if (tokens[body.token].ip == get_Ip(req)){
-        let long_Token = generate_Token(200); 
+        let long_Token = generate_Token(100); 
         logined_Users.add(long_Token, {ip: get_Ip(req), user: tokens[body.token].user, user_Id: tokens[body.token].user_Id});
-        console.log(logined_Users.request());
-        res.send(JSON.stringify({name: "login_Token", value: long_Token}));
+        res.send(logined_Users.request());
+        //res.send(JSON.stringify({name: "login_Token", value: long_Token}));
         delete tokens[body.token];
     }
 });
