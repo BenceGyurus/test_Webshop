@@ -66,6 +66,15 @@ class set_Header{
 }
 
 
+function get_Ip(req){
+    if (req.headers['x-forwarded-for']){
+        return req.headers['x-forwarded-for'];
+    }
+    else{
+        return req.socket.remoteAddress;
+    }
+}
+
 function open_Error(){
     return open(`${__dirname}/source/404.html`);
 }
@@ -113,7 +122,7 @@ app.post("/adminlogin",(req, res) =>{
             if ((json_File[body.mail].password) == encryption(body.password)){
                 token = "asdasdf"//generate_Token(100);
                 message = {message: "Sikeres bejelentkezés", response: true, token: token};
-                tokens[token] = {ip: req.socket.remoteAddress, user: body.mail,user_Id: json_File[body.mail].id};
+                tokens[token] = {ip: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for']: req.socket.remoteAddress, user: body.mail,user_Id: json_File[body.mail].id};
             }
             else{
                 message = {message: "Helytelen jelszó"};
@@ -145,7 +154,7 @@ app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
     res.send(long_Tokens);
     /*if (body.token){
-    if (control_Long_Token(body.token,req.socket.remoteAddress)){
+    if (control_Long_Token(body.token,get_Ip(req))){
         open(`${__dirname}/admin_Datas/admin_Rules.html`) ? res.sendFile(`${__dirname}/admin_Datas/admin_Rules.html`) : res.sendFile(`${__dirname}/source/404.html`)
     }
     else{
@@ -160,9 +169,9 @@ app.post("/get_Admin_Rule", (req,res)=>{
 
 app.post("/admin-login-cookie", (req,res)=>{
     let body = parse_Body(req.body);
-    if (tokens[body.token].ip == req.socket.remoteAddress){
+    if (tokens[body.token].ip == get_Ip(req)){
         let long_Token = generate_Token(100);
-        long_Tokens[long_Token] = {ip: req.socket.remoteAddress, user: tokens[body.token].user, user_Id: tokens[body.token].user_Id};
+        long_Tokens[long_Token] = {ip: get_Ip(req), user: tokens[body.token].user, user_Id: tokens[body.token].user_Id};
         res.send(JSON.stringify({name: "login_Token", value: long_Token}));
         delete tokens[body.token];
     }
