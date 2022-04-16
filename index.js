@@ -135,7 +135,8 @@ app.post("/adminlogin",(req, res) =>{
 
 app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
-    if (body.token){
+    res.send(body);
+    /*if (body.token){
     if (control_Long_Token(body.token,req.socket.remoteAddress)){
         open(`${__dirname}/admin_Datas/admin_Rules.html`) ? res.sendFile(`${__dirname}/admin_Datas/admin_Rules.html`) : res.sendFile(`${__dirname}/source/404.html`)
     }
@@ -145,7 +146,7 @@ app.post("/get_Admin_Rule", (req,res)=>{
     }
     else{
         res.send({message: "Nincs hozzáférése ehhez az oldalhoz!", error: true});
-    }
+    }*/
 })
 
 
