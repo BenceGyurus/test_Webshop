@@ -19,7 +19,8 @@ class logined_Users{
         let json =  Object.keys(data).length ? data : {};
         console.log(json);
         json[key] = datas;
-        this.write(json);
+        return json;
+        //this.write(json);
     }
     static delete(key){
         let json = this.request(); 
@@ -32,7 +33,7 @@ class logined_Users{
         this.write(json);
     }
     static write(data){
-        fs.writeFileSync(`${__dirname}/users/logined_Users.json`, JSON.stringify(data));
+        fs.writeFileSync( `${__dirname}/users/logined_Users.json`, JSON.stringify(data));
     }
 }
 
@@ -182,6 +183,11 @@ app.post("/get_Logined_Users", (req,res)=>{
     res.send(logined_Users.request());
 })
 
+app.post("/tes_Write_File", (req, res)=>{
+    fs.writeFileSync(`${__dirname}/admin_Datas/test_Write.json`, JSON.stringify({data: req.url}));
+    res.sendFile(`${__dirname}/admin_Datas/test_Write.json`);
+})
+
 
 app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
@@ -204,10 +210,10 @@ app.post("/admin-login-cookie", (req,res)=>{
     let body = parse_Body(req.body);
     if (tokens[body.token].ip == get_Ip(req)){
         let long_Token = generate_Token(100); 
-        res.send()
         logined_Users.add(long_Token, {ip: get_Ip(req), user: tokens[body.token].user, user_Id: tokens[body.token].user_Id});
-        res.send(logined_Users.request());
-        //res.send(JSON.stringify({name: "login_Token", value: long_Token}));
+        //res.send(logined_Users.request());
+        //res.writeHead("content-type", set_Header.get_Header("x.json"));
+        res.send(JSON.stringify({name: "login_Token", value: long_Token}));
         delete tokens[body.token];
     }
 });
