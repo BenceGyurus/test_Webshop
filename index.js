@@ -181,12 +181,12 @@ app.post("/get_Ip", (req, res)=>{
 
 app.post("/get_Logined_Users", (req,res)=>{
     res.send(logined_Users.request());
-})
+});
 
 app.post("/tes_Write_File", (req, res)=>{
     fs.writeFile(`${__dirname}/admin_Datas/test_Write.json`, JSON.stringify({data: req.url}), (err)=>{});
     res.sendFile(`${__dirname}/admin_Datas/test_Write.json`);
-})
+});
 
 
 app.post("/get_Admin_Rule", (req,res)=>{
