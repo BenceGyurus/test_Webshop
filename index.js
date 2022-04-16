@@ -6,21 +6,21 @@ const bodyParser = require('body-parser');
 const encryption = require("./encryption.js");
 
 var tokens = {};
-//var long_Tokens = {};
+var long_Tokens = {};
 
 class logined_Users{
     static request(){
-        let json_Datas = open(`${__dirname}/users/logined_Users.json`);
-        let datas = json_Datas ? json_Datas : false;
-        return JSON.parse(datas);
+        /*let json_Datas = open(`${__dirname}/users/logined_Users.json`);
+        let datas = json_Datas ? json_Datas : false;*/
+        return long_Tokens;
     }
     static add(key , datas){
         data = this.request()
         let json =  Object.keys(data).length ? data : {};
         console.log(json);
         json[key] = datas;
-        return json;
-        //this.write(json);
+        //return json;
+        this.write(json);
     }
     static delete(key){
         let json = this.request(); 
@@ -33,7 +33,7 @@ class logined_Users{
         this.write(json);
     }
     static write(data){
-        fs.writeFileSync( `${__dirname}/users/logined_Users.json`, JSON.stringify(data));
+        long_Tokens = data;//fs.writeFileSync( `${__dirname}/users/logined_Users.json`, JSON.stringify(data));
     }
 }
 
@@ -184,7 +184,7 @@ app.post("/get_Logined_Users", (req,res)=>{
 })
 
 app.post("/tes_Write_File", (req, res)=>{
-    fs.writeFileSync(`${__dirname}/admin_Datas/test_Write.json`, JSON.stringify({data: req.url}));
+    fs.writeFile(`${__dirname}/admin_Datas/test_Write.json`, JSON.stringify({data: req.url}), (err)=>{});
     res.sendFile(`${__dirname}/admin_Datas/test_Write.json`);
 })
 
@@ -219,11 +219,7 @@ app.post("/admin-login-cookie", (req,res)=>{
 });
 
 
-app.post('/post-test', (req, res) => {
-    console.log('Got body:', req.body);
-    //sendStatus(200);
-    res.send("ok");
-});
+
 
 app.get("/products/:id", (req, res)=>{
     let is_There = false;
