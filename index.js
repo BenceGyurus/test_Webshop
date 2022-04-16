@@ -133,6 +133,14 @@ app.post("/adminlogin",(req, res) =>{
 });
 
 
+app.post("/get_Ip", (req, res)=>{
+    res.send({
+        "req.headers['x-forwarded-for']" : req.headers['x-forwarded-for'],
+        "req.socket.remoteAddress" : req.socket.remoteAddress
+    })
+})
+
+
 app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
     res.send(long_Tokens);
