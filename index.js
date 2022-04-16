@@ -6,9 +6,38 @@ const bodyParser = require('body-parser');
 const encryption = require("./encryption.js");
 
 var tokens = {};
-var long_Tokens = {};
+//var long_Tokens = {};
+
+class logined_Users{
+    static request(){
+        let json_Datas = open(`${__dirname}/users/logined_Users.json`);
+        let datas = json_Datas ? json_Datas : false;
+        return JSON.parse(datas);
+    }
+    static add(key , datas){
+        data = this.request()
+        let json =  Object.keys(data).length ? data : {};
+        console.log(json);
+        json[key] = datas;
+        this.write(json);
+    }
+    static delete(key){
+        let json = this.request(); 
+        let keys = Object.keys(json);
+        for (let i = 0; i < keys; i++){
+            if (keys[i] == keys){
+                delete json[keys[i]];
+            }
+        }
+        this.write(json);
+    }
+    static write(data){
+        fs.writeFileSync(`${__dirname}/users/logined_Users.json`, JSON.stringify(data));
+    }
+}
 
 function control_Long_Token(token, ip_Adress){
+    let long_Tokens = logined_Users.request();
     if (Object.keys(long_Tokens).length > 0){
     if (long_Tokens[token].ip == ip_Adress){return true}else{return false}
     }
@@ -120,7 +149,7 @@ app.post("/adminlogin",(req, res) =>{
         if (json_File[body.mail]){
             //res.send(encryption(body.password));
             if ((json_File[body.mail].password) == encryption(body.password)){
-                token = "asdasdf"//generate_Token(100);
+                token = generate_Token(100);
                 message = {message: "Sikeres bejelentkezés", response: true, token: token};
                 tokens[token] = {ip: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for']: req.socket.remoteAddress, user: body.mail,user_Id: json_File[body.mail].id};
             }
@@ -152,8 +181,8 @@ app.post("/get_Ip", (req, res)=>{
 
 app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
-    res.send(long_Tokens);
-    /*if (body.token){
+    //long_Tokens = logined_Users.request();
+    if (body.token){
     if (control_Long_Token(body.token,get_Ip(req))){
         open(`${__dirname}/admin_Datas/admin_Rules.html`) ? res.sendFile(`${__dirname}/admin_Datas/admin_Rules.html`) : res.sendFile(`${__dirname}/source/404.html`)
     }
@@ -163,15 +192,16 @@ app.post("/get_Admin_Rule", (req,res)=>{
     }
     else{
         res.send({message: "Nincs hozzáférése ehhez az oldalhoz!", error: true});
-    }*/
+    }
 })
 
 
 app.post("/admin-login-cookie", (req,res)=>{
     let body = parse_Body(req.body);
     if (tokens[body.token].ip == get_Ip(req)){
-        let long_Token = generate_Token(100);
-        long_Tokens[long_Token] = {ip: get_Ip(req), user: tokens[body.token].user, user_Id: tokens[body.token].user_Id};
+        let long_Token = generate_Token(200); 
+        logined_Users.add(long_Token, {ip: get_Ip(req), user: tokens[body.token].user, user_Id: tokens[body.token].user_Id});
+        console.log(logined_Users.request());
         res.send(JSON.stringify({name: "login_Token", value: long_Token}));
         delete tokens[body.token];
     }
