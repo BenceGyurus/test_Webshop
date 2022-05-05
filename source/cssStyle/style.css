@@ -1,5 +1,6 @@
 *{
-    font-family: "Brush Script MT";
+    font-family: sans-serif, "ubuntu";
+    color: #474747;
 }
 body{
     margin: 0px;
@@ -16,8 +17,7 @@ body{
 }
 
 #header{
-    width: 100%;
-    background-color: #707070;
+    background-color: #363636;
     padding: 10px;
     margin: 0px;
     height: 45px;

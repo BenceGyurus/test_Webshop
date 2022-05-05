@@ -6,7 +6,31 @@
             "add_Product" : true,
             "orders" : true,
             "edit_ASZF": true,
-            "add_Editor" : true
+            "add_Editor" : true,
+            "edit_Rules": true
+        }
+    },
+
+    "admin2" : {
+        "password": "490805561291600451805299463950357450205787761395687958467493348685860544580",
+        "id": "main_Admin",
+        "edit_Rule": {
+            "add_Product" : false,
+            "orders" : true,
+            "edit_ASZF": true,
+            "add_Editor" : true,
+            "edit_Rules": false
+        }
+    },
+    "admin3" : {
+        "password": "490805561291600451805299463950357450205787761395687958467493348685860544580",
+        "id": "main_Admin",
+        "edit_Rule": {
+            "add_Product" : true,
+            "orders" : false,
+            "edit_ASZF": false,
+            "add_Editor" : false,
+            "edit_Rules": false
         }
     }
 }

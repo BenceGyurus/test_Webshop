@@ -1,5 +1,5 @@
 #alert{
-    position: absolute;
+    position: fixed;
     background-color: red;
     height: max-content;
     padding: 5px 20px 5px 20px;
@@ -12,7 +12,7 @@ h1{
     width: 60%;
 }
 
-img{
+#img{
     position: absolute;
     right: 15px;
     height: 60%;

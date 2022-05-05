@@ -10,14 +10,13 @@ var long_Tokens = {};
 
 class logined_Users{
     static request(){
-        /*let json_Datas = open(`${__dirname}/users/logined_Users.json`);
-        let datas = json_Datas ? json_Datas : false;*/
-        return long_Tokens;
+        let json_Datas = open(`${__dirname}/users/logined_Users.json`);
+        let datas = json_Datas ? JSON.parse(json_Datas) : false;
+        return datas;
     }
     static add(key , datas){
         data = this.request()
         let json =  Object.keys(data).length ? data : {};
-        console.log(json);
         json[key] = datas;
         //return json;
         this.write(json);
@@ -33,17 +32,24 @@ class logined_Users{
         this.write(json);
     }
     static write(data){
-        long_Tokens = data;//fs.writeFileSync( `${__dirname}/users/logined_Users.json`, JSON.stringify(data));
+        fs.writeFileSync( `${__dirname}/users/logined_Users.json`, JSON.stringify(data));
     }
 }
 
 function control_Long_Token(token, ip_Adress){
     let long_Tokens = logined_Users.request();
     if (Object.keys(long_Tokens).length > 0){
-    if (long_Tokens[token].ip == ip_Adress){return true}else{return false}
+    if (long_Tokens[token] && long_Tokens[token].ip == ip_Adress){return true}else{return false}
     }
     else{
         return false;
+    }
+}
+
+class user_Informations{
+    static open(token){
+        tokens = logined_Users.request()[token];
+        return tokens;
     }
 }
 
@@ -95,6 +101,19 @@ class set_Header{
     }
 }
 
+class search{
+    static in_Users(username, key){
+        let users = JSON.parse(open(`${__dirname}/admin_Datas/admin.json`));
+        if (users[username]){
+            return users[username][key];
+        }
+    }
+    static in_Rules(rule){
+        let rules = JSON.parse(open(`${__dirname}/admin_Datas/rules.json`));
+        return rules[rule];
+    }
+}
+
 
 function get_Ip(req){
     if (req.headers['x-forwarded-for']){
@@ -119,7 +138,7 @@ function send(res, data, status){
 
 function send_File(res, file_Name, status){
     let file = open(`${__dirname}/source/${file_Name}`);
-    file ? res.status(200).sendFile(`${__dirname}/source/${file_Name}`) : res.status(404).sendFile(`${__dirname}/source/404.html`);
+    file ? res.sendFile(`${__dirname}/source/${file_Name}`) : res.status(404).sendFile(`${__dirname}/source/404.html`);
 }
 
 function generate_Token(length){
@@ -179,22 +198,40 @@ app.post("/get_Ip", (req, res)=>{
     })
 })
 
-app.post("/get_Logined_Users", (req,res)=>{
-    res.send(logined_Users.request());
-});
+function control_Admin(access, token){
+    user = user_Informations(token);
+    all_User_Data = search.in_Users(user);
+    if (all_User_Data){
+        return all_User_Data.edit_Rule[access] ? true : false;
+    }
+    else{
+        return false;
+    }
+}
 
-app.post("/tes_Write_File", (req, res)=>{
-    fs.writeFile(`${__dirname}/admin_Datas/test_Write.json`, JSON.stringify({data: req.url}), (err)=>{});
-    res.sendFile(`${__dirname}/admin_Datas/test_Write.json`);
-});
 
+app.post("/get_Products", (req,res)=>{
+    body = parse_Body(req.body);
+    if (control_Long_Token(body.token, get_Ip(req))){
+        control_Admin ? res.sendFile(`${__dirname}/source/products.json`) : res.send(JSON.stringify({error: true, message: "Nincs hozzáférése ehhez a fájlhoz"}));
+    }
+})
 
 app.post("/get_Admin_Rule", (req,res)=>{
     let body = parse_Body(req.body);
     //long_Tokens = logined_Users.request();
     if (body.token){
     if (control_Long_Token(body.token,get_Ip(req))){
-        open(`${__dirname}/admin_Datas/admin_Rules.html`) ? res.sendFile(`${__dirname}/admin_Datas/admin_Rules.html`) : res.sendFile(`${__dirname}/source/404.html`)
+        user = user_Informations.open(body.token);
+        edit_Rules = search.in_Users(user.user, "edit_Rule");
+        list_Rules = Object.keys(edit_Rules);
+        json = {data : [], user_Name: user.user};
+        for (let i = 0; i < list_Rules.length;i++){
+            all_Data = edit_Rules[list_Rules[i]] ? json.data.push(search.in_Rules(list_Rules[i])) : "";
+            
+        }
+        //open(`${__dirname}/admin_Datas/rules.json`) ? res.sendFile(`${__dirname}/admin_Datas/admin_Rules.html`) : res.sendFile(`${__dirname}/source/404.html`)
+        res.send(JSON.stringify(json));
     }
     else{
         res.send({message: "Nincs hozzáférése ehhez az oldalhoz!", error: true});
@@ -205,14 +242,144 @@ app.post("/get_Admin_Rule", (req,res)=>{
     }
 })
 
+function control_Access(token, ip){
+    file_Datas = open(`${__dirname}/users/logined_Users.json`);
+    json_Data = file_Datas ? JSON.parse(file_Datas) : false;
+    if (json_Data){
+        if (json_Data[token]){
+            if (json_Data[token].ip == ip){return [json_Data[token].user_Id, json_Data[token].user];}
+            else{return false;}
+        }
+        else{return false;}
+    }
+    else{return false;}
+}
+
+//https://stackoverflow.com/questions/23187013/is-there-a-better-way-to-sanitize-input-with-javascript
+function sanitizeString(str){
+    str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"");
+    return str.trim();
+}
+
+function create_Id(string){
+    let new_String = "";
+    chars = JSON.parse(open(`${__dirname}/chars.json`));
+    for (let i = 0; i < string.length; i++){
+        if (chars[string[i]]){
+            new_String += chars[string[i]].toLowerCase();
+        }
+        else{
+            new_String += string[i].toLowerCase();
+        }
+    }
+    return new_String
+}
+
+function edit_Products(datas){
+    products = [];
+    for (let i = 0; i < datas.length; i++){
+        keys = Object.keys(datas[i]);
+        product = {};
+        for (let j = 0;j < keys.length; j++){
+            typeof(product[keys[j]]) == "string" ?product[keys[j]] = sanitizeString(datas[i][keys[j]]) : product[keys[j]] = datas[i][keys[j]];
+        }
+        product.rating = 0;
+        product.image = "test_Image.png"; 
+        product.id = create_Id(product.name);
+        products.push(product);
+    }
+    return products;
+}
+
+app.post("/edit_Products", (req,res)=>{
+    let body = parse_Body(req.body);
+    let user_Id = control_Access(body.token, get_Ip(req));
+    let sent = false;
+    let error = "";
+    if (user_Id){
+        let accesses = search.in_Users(user_Id[1], "edit_Rule");
+        if (accesses){
+            if (accesses.add_Product){
+                sent = true;
+                try{
+                datas = JSON.parse(open(`${__dirname}/source/products.json`)); 
+                datas.products = edit_Products(body.products);
+                fs.writeFile(`${__dirname}/source/products.json`, JSON.stringify(datas), (err) => {
+                    if (err)
+                        res.send(JSON.stringify({error: false, message: "Sikertelen mentés"}));
+                    else {
+                        res.send(JSON.stringify({error: false, message: "Sikeres mentés"}));
+                    }
+                  });
+                }
+                catch{
+                    error = "Helytelen adat";
+                }
+                
+            }else{
+                error = "Nincs hozzáférése az oldalhoz";
+            }
+        }
+        else{
+            error = "Nincs hozzáférése az oldalhoz";
+        }
+    }
+    else{
+        error = "Az felhasználója jelenleg nem működik";
+    }
+    sent ? "":res.send(JSON.stringify({error: true, message: error}));
+    }
+)
+
+
+function create_File_Name(){
+    date = new Date();
+    return `${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}`
+}
+
+app.post("/make_Backup", (req, res)=> {
+    let body = parse_Body(req.body);
+    let user_Id = control_Access(body.token, get_Ip(req));
+    if (user_Id){
+        let accesses = search.in_Users(user_Id[1], "edit_Rule");
+        if (accesses){
+            let file_Name = create_File_Name();
+            file_Data = open(`${__dirname}/source/products.json`);
+            fs.writeFile(`${__dirname}/backups/${file_Name}.json`, file_Data, (err)=>{
+                err ? res.send(JSON.stringify({error:true, message:"Sikertelen biztonsági mentés"})) : res.send(JSON.stringify({error: false, message: "Sikeres biztonsági mentés"}));
+            })
+        }
+    }
+});
+
+app.post("/add_Products", (req, res)=> {
+    let body = parse_Body(req.body);
+    let user_Id = control_Access(body.token, get_Ip(req));
+    let error = "" 
+    if (user_Id){
+        let accesses = search.in_Users(user_Id[1], "edit_Rule");
+        if (accesses){
+            if (accesses.add_Product){
+                res.sendFile(`${__dirname}/source/add_Products/index.html`);
+            }else{
+                error = "Nincs hozzáférése az oldalhoz";
+            }
+        }
+        else{
+            error = "Nincs hozzáférése az oldalhoz";
+        }
+    }
+    else{
+        error = "Az felhasználója jelenleg nem működik";
+    }
+    error ? res.send(JSON.stringify({error: true, message: error})) : "";
+})
 
 app.post("/admin-login-cookie", (req,res)=>{
     let body = parse_Body(req.body);
     if (tokens[body.token].ip == get_Ip(req)){
         let long_Token = generate_Token(100); 
         logined_Users.add(long_Token, {ip: get_Ip(req), user: tokens[body.token].user, user_Id: tokens[body.token].user_Id});
-        //res.send(logined_Users.request());
-        //res.writeHead("content-type", set_Header.get_Header("x.json"));
         res.send(JSON.stringify({name: "login_Token", value: long_Token}));
         delete tokens[body.token];
     }
@@ -223,15 +390,14 @@ app.post("/admin-login-cookie", (req,res)=>{
 
 app.get("/products/:id", (req, res)=>{
     let is_There = false;
-    products = JSON.parse(open_File("source/products.json"));
+    products = JSON.parse(open(`${__dirname}/source/products.json`));
     for (let i = 0; i < products.products.length; i++){
-        console.log(products.products[i].id);
         if (products.products[i].id == req.params.id){
             is_There = true;
         }
     }
     if (is_There){
-        res.send(open_File("source/products/index.html"));
+        res.send(open(`${__dirname}/source//products/index.html`));
     }
     else{
         res.send("error");

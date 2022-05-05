@@ -6,17 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin felület</title>
     <link rel="stylesheet" href="admin/style.css">
+    <link rel="stylesheet" href="cssStyle/footer.css">
 </head>
 <body>
     <div id = "header">
         <h1>Admin felület</h1>
-        <input type = "button" value = "kijelentkezés" onclick = "logout()">
+        <h2 id = "userName"></h2>
+        <input type = "button" class = "rejected" value = "Kijelentkezés" onclick = "logout()">
     </div>
     <div id = "conteiner">
         
     </div>
+    <footer><div class = "footer">
+        <a href="" class = "new">ASZF</a>
+        <a href="/" class = "new">Kezdőlap</a>
+        <a href = "" class = "new">GYIK</a>
+    </footer>
 </body>
 <script src="admin/main.js"></script>
 <script src = "cookie/cookies.js"></script>
 <script src="/alert/main.js"></script>
+<script src="admin/query.js"></script>
 </html>

@@ -25,6 +25,7 @@ function re_Animation(){
 function write_Alert(text, type, title){
     type = type ? type=="warning" ? "#ff9500" : "green"  : "red";       //error, warning
     req= new XMLHttpRequest();
+    try{d = save_Datas();}catch{}
     req.onreadystatechange = ()=>{
         if (req.status == 200 && req.readyState == 4){
             try{
@@ -54,6 +55,7 @@ function write_Alert(text, type, title){
                 catch{}
             }, 4000);
         }
+        try{re_Save_Datas(d);}catch{}
     }
     req.open("GET", "/alert/index.html");
     req.send()

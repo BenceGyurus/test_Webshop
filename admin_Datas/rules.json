@@ -1,5 +1,7 @@
 {
-    "rules": [
-        "add_Product", "orders", "edit_ASZF", "add_Editor"
-    ]
+    "add_Product" : ["/add-products", "Termék hozzáadása"],
+    "orders" : ["/orders", "Rendelések megtekintése"],
+    "edit_ASZF": ["/edit-aszf", "Általános szerződési feltétlek szerkesztése"],
+    "add_Editor" : ["/add-editor", "Szerkesztő hozzáadása"],
+    "edit_Rules" : ["/edit-rules", "Szerkesztők"]
 }

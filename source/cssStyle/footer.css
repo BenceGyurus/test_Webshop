@@ -1,0 +1,35 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+.new{
+    margin: 10px;
+    padding: 2px;
+    color: #7a7a7a;
+}
+
+footer{
+    background-color: #363636;
+    padding: 10px;
+    margin: 10px 0px 0px 0px;
+}
+
+.footer{
+    width:max-content;
+    padding: 1px;
+    margin: 1px auto;
+    display: block;
+}
+
+#header{
+    background-color: #363636;
+    padding: 10px;
+    margin: 0px;
+    height: 45px;
+}
+.main_Title{
+    color: #7a7a7a;
+    padding: 0px;
+    margin: 0px 10px 10px 10px;
+}

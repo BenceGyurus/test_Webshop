@@ -1,3 +1,68 @@
 *{
-    
+    font-family: sans-serif, "ubuntu";
+}
+
+.rejected{
+    transition: 0.5s;
+    position: absolute;
+    right: 30px;
+    top: 10px;
+    width: max-content;
+    padding: 10px;
+    border-radius: 3px;
+    outline: none;
+    background-color: #949494;
+    border:none;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px;
+}
+
+.rejected:hover{
+    transition: 0.3s;
+    box-shadow: 1px 1px 1px 1px red;
+}
+
+.accept{
+    transition: 0.5s;
+    position: absolute;
+    right: 30px;
+    top: 10px;
+    width: max-content;
+    padding: 10px;
+    border-radius: 3px;
+    outline: none;
+    background-color: #949494;
+    border:none;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px;
+}
+
+.accept:hover{
+    transition: 0.3s;
+    box-shadow: 1px 1px 1px 1px green;
+}
+
+.select_Button{
+    display: block;
+    transition: 0.5s;
+    width: 80%;
+    padding: 10px;
+    border-radius: 3px;
+    outline: none;
+    background-color: #949494;
+    border:none;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px;
+    margin: 10px auto;
+}
+
+.select_Button:hover{
+    transition: 0.3s;
+    box-shadow: 1px 1px 1px 1px;
+}
+
+#conteiner{
+    width: 60%;
+    max-width: 400px;
+    margin: 100px auto;
+    border: 3px solid black;
+    border-radius: 30px;
+    padding: 50px;
 }

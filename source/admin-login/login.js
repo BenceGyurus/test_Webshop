@@ -17,7 +17,7 @@ function clear_Error(){
 
 function control_Auto_Login(){
     if (parse_Cookies().login_Token.length > 10){
-        //window.location = "/admin";
+        window.location = "/admin";
     }
 }
 
@@ -51,8 +51,7 @@ function send_This(){
                         if (req.readyState == 4 && req.status == 200){
                             let next = add_Cookie(JSON.parse(req.responseText));
                             if (next){
-                            write_Alert("Átirányítás folyamatban", "suc", "Sikeres bejelentkezés");
-                            setTimeout(()=>{/*window.location = "/admin";*/}, 3000);
+                                control_Auto_Login();
                             }
                         }
                     }
