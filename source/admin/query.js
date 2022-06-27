@@ -25,7 +25,7 @@ function send(method, url, data, callback){
             write_Alert("Hiba történt az oldal betöltése közben", "", "Hiba");
         }
     }
-    req.open("POST", url);
+    req.open(method, url);
     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     req.send(data)
 }

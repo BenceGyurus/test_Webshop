@@ -1,0 +1,36 @@
+const keys = ["name", "price", "description", "stock", "isInStock"];
+
+
+
+function generate_Token(length){
+    let letters_And_Numbers = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7' ,'8', '9', '0'];
+    let token = "";
+    for (let i = 0; i < length; i++){
+        token += letters_And_Numbers[Math.ceil(Math.random()*letters_And_Numbers.length)];
+    }
+    return token;
+}
+
+
+
+
+function sanitizeString(str){
+    let new_Str = "";
+    try{
+        chars = JSON.parse(open(`${__dirname}/safety_Chars.json`));
+        if (chars){
+        for (let i = 0; i < str.length; i++){
+            if (chars[str[i]]){
+                new_Str += chars[str[i]];
+            }
+            else{
+                new_Str += str[i];
+            }
+        }
+        }
+    }
+    catch{
+        new_Str = false;
+    }
+    return new_Str;
+}

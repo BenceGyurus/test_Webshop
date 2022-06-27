@@ -15,7 +15,7 @@ body{
     margin: 5px;
     border: none;
     border-bottom: 3px solid #2b2b2b;
-    box-shadow:0.1px 0.1px 0.1px 0.1px#2b2b2b;
+    box-shadow:0.1px 0.1px 0.1px 0.1px #2b2b2b;
     display: block;
     font-size: 18px;
 }
@@ -27,7 +27,7 @@ body{
 
 .main_Div{
     margin: 10px auto;
-    padding: 0px 30px 30px 30px;
+    padding: 30px 30px 30px 30px;
     border: 3px solid #2b2b2b;
     border-radius: 10px;
     box-shadow: 1px 1px 1px 1px #2b2b2b;
@@ -35,7 +35,7 @@ body{
     min-width: 300px;
 }
 
-.delete_Button{
+.close{
     top: 10px;
     position: relative;
     left: 95%;
@@ -60,6 +60,18 @@ body{
     width: 5%;
     position: relative;
     left: 47.5%;
+    transition: 0.3s;
+    border: 5px solid black;
+    border-radius: 100%;
+    padding: 0px;
+    margin: 5px;
+}
+
+#add_New:hover{
+    padding: 3px;
+    margin: 2px;
+    transition: 0.1s;
+    transform: rotateZ(15deg);
 }
 
 .radio_Div{
@@ -103,4 +115,79 @@ body{
     position: fixed;
     top:    30%;
     right: 10px;
+}
+
+.loaded_Item{
+    display: block;
+    font-size: 18px;
+
+}
+
+.delete{
+    transition: 0.3s;
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+
+.delete:hover{
+    padding: 2px;
+    padding: 2px;
+    margin: 3px;
+    transition: 0.2s;
+    background-color: red;
+    transform: rotateZ(15deg);
+}
+
+.accept{
+    transition: 0.3s;
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+
+.accept:hover{
+    padding: 2px;
+    margin: 3px;
+    transition: 0.2s;
+    background-color: green;
+    transform: rotateZ(15deg);
+}
+
+.gird_Div{
+    width: 80%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px auto;
+    border: 3px solid black;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px #2b2b2b;
+}
+
+.edit{
+    transition: 0.3s;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border: 5px solid black;
+    border-radius: 100%;
+    padding: 5px;
+    margin: 5px;
+    left: 80%;
+}
+
+.edit:hover{
+    padding: 7px;
+    margin: 3px;
+    transition: 0.2s;
+    transform: rotateZ(15deg);
+}
+
+.empty{
+    color: red;
+}
+.there_Is{
+    color: green;
 }

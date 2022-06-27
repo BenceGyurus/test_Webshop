@@ -14,13 +14,19 @@ class html{
         return `<div id = "${id}" class = "${class_Name}">${data}</div>`;
     }
     static input(id,class_Name,type,placeholder,value, name, onclick){
-        return `<input type = "${type}" id = "${id}" class = "${class_Name}" ${placeholder ? `placeholder = "${placeholder}"` : ""} value = "${value}" name = "${name}" ${onclick?`onclick=${onclick}`:""}>`;
+        return `<input type = "${type}" id = "${id}" class = "${class_Name}" ${placeholder ? `placeholder = "${placeholder}"` : ""} ${value ? `value = "${value}"`:""} name = "${name}" ${onclick?`onclick=${onclick}`:""}>`;
     }
     static label(id, class_Name, data, for_This){
         return `<label ${for_This?`for = ${for_This}`: ""} id = "${id}" class = "${class_Name}">${data}</label>`
     }
     static img(id, class_Name, src, onclick){
-        return `<img src = "${src}" class = "${class_Name}" id = "${id}" ${onclick?`onclick="${onclick}"`:""}/>`
+        return `<img src = "${src}" class = "${class_Name}" ${id ? `id = "${id}"`: ""} ${onclick?`onclick="${onclick}"`:""}/>`
+    }
+    static select(id, class_Name, name, data){
+        return `<select ${id ? `id = "${id}"`: ""} ${class_Name ?  `class = "${class_Name}"`: ""} ${name ? `name = "${name}"` : ""}>${data}</select>`;
+    }
+    static option(id,class_Name, value, data){
+        return `<option ${id ? `id = "${id}"` : ""} ${class_Name ? `class = "${class_Name}"` : ""} ${value ? `value = "${value}"`: ""}>${data}</option>`
     }
 }
 
